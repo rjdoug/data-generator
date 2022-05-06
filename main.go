@@ -2,48 +2,61 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"math/rand"
 	"os"
+	"strings"
 
 	"github.com/tjarratt/babble"
 )
 
-func main() {
-	generateMedication(10)
+type field[T any] struct {
+	name  string
+	value T
 }
 
-// id NUMBER GENERATED ALWAYS AS IDENTITY,
-// scientific_name VARCHAR2(50),
-// cost NUMBER(38,2) CHECK (cost >= 0),
-// isSubsidised NUMBER(1,0) DEFAULT 0 NOT NULL CHECK (isSubsidised in (0,1)),
-// brand VARCHAR2(50),
-// PRIMARY KEY(id)
+func generateMedication(dataLength int) error {
 
-func generateMedication(dataLength int) []string {
-	var id, isSubsidised int
-	var scientificName, brand string
-	var cost float32
+	isSubsidised := field[int]{
+		name: "isSubsidised",
+	}
 
-	var lines []string
+	scientificName := field[string]{
+		name: "scientific_name",
+	}
+
+	brand := field[string]{
+		name: "brand",
+	}
+
+	cost := field[float64]{
+		name: "cost",
+	}
+
+	lines := make([]string, dataLength)
 
 	babbler := babble.NewBabbler()
 	babbler.Count = 1
 
-	for i := 1; i <= dataLength; i++ {
-		id = i
-		isSubsidised = rand.Intn(2)
-		scientificName = babbler.Babble()
-		brand = babbler.Babble()
-		cost = 3.45
+	min := 0.0
+	max := 100.0
 
-		line := fmt.Sprintf("INSER INTO medication (id, scientific_name, cost, isSubsidised, brand) VALUES (%d, %d, %s, %s, %.2f)\n",
-			id, isSubsidised, scientificName, brand, cost)
+	for i := 0; i < dataLength; i++ {
+		isSubsidised.value = rand.Intn(2)
+		scientificName.value = strings.Replace(babbler.Babble(), "'", "", -1)
+		brand.value = strings.Replace(babbler.Babble(), "'", "", -1)
+		cost.value = min + rand.Float64()*(max-min)
 
-		lines = append(lines, line)
+		line := fmt.Sprintf("INSERT INTO medication (%s, %s, %s, %s) VALUES (%d, '%s', '%s', %.2f)\n",
+			isSubsidised.name, scientificName.name, brand.name, cost.name,
+			isSubsidised.value, scientificName.value, brand.value, cost.value)
+
+		lines[i] = line
 	}
 
-	fmt.Print(lines)
+	err := writeFile("medication.sql", lines)
+	if err != nil {
+		return fmt.Errorf("Error generating medication: %s", err)
+	}
 	return nil
 }
 
@@ -52,4 +65,20 @@ func writeFile(file string, lines []string) error {
 	if err != nil {
 		return fmt.Errorf("")
 	}
+	defer f.Close()
+
+	for _, line := range lines {
+		_, err := f.WriteString(line)
+
+		if err != nil {
+			return fmt.Errorf("writing to file: %v", err)
+		}
+	}
+	fmt.Printf("%s written successfully\n", file)
+
+	return nil
+}
+
+func main() {
+	generateMedication(10)
 }
