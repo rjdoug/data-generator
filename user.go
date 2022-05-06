@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"math/rand"
-
-	"github.com/tjarratt/babble"
 )
 
 func GenerateUser(dataLength int) ([]string, error) {
@@ -33,9 +31,6 @@ func GenerateUser(dataLength int) ([]string, error) {
 
 	// to be returned for use when making generalization data
 	usernames := make([]string, dataLength)
-
-	babbler := babble.NewBabbler()
-	babbler.Count = 1
 
 	for i := 0; i < dataLength; i++ {
 		username.value = GetBabble()

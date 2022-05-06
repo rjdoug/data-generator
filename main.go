@@ -14,6 +14,11 @@ import (
 
 var babbler = babble.NewBabbler()
 
+const medicationCount = 700
+
+const userCount int = 700
+const doctorCount int = 10
+
 func writeFile(file string, lines []string) error {
 	f, err := os.Create(file)
 	if err != nil {
@@ -70,14 +75,15 @@ func main() {
 	// set babble number of words to generate per call
 	babbler.Count = 1
 
-	if err := GenerateMedication(10); err != nil {
+	if err := GenerateMedication(medicationCount); err != nil {
 		log.Fatal(err)
 	}
 
-	usernames, err := GenerateUser(10)
+	usernames, err := GenerateUser(userCount)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	fmt.Println(usernames)
+	GeneratePatients(usernames[doctorCount:])
+
 }
