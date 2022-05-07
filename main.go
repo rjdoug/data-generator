@@ -84,6 +84,7 @@ func main() {
 		log.Fatal(err)
 	}
 
+	GeneratePractioners(usernames[:doctorCount])
 	GeneratePatients(usernames[doctorCount:])
 
 }
