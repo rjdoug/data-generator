@@ -11,16 +11,14 @@ import (
 
 	"github.com/sethvargo/go-password/password"
 	"github.com/tjarratt/babble"
-
-
 )
 
 var babbler = babble.NewBabbler()
 
-const medicationCount = 700
-
 const userCount int = 700
 const practitionerCount int = 10
+const prescriptionCount = 1000
+const medicationCount = 10000
 
 func writeFile(file string, lines []string) error {
 	f, err := os.Create(file)
@@ -124,6 +122,10 @@ func main() {
 	}
 
 	if err := GeneratePrescriptions(1000, patients, practitioners); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := GenerateContains(1000, prescriptionCount, medicationCount); err != nil {
 		log.Fatal(err)
 	}
 
