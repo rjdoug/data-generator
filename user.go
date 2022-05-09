@@ -33,7 +33,7 @@ func GenerateUser(dataLength int) ([]string, error) {
 	usernames := make([]string, dataLength)
 
 	for i := 0; i < dataLength; i++ {
-		username.value = GetBabble()
+		username.value = GetBabble(1)
 
 		pwd, err := GetPassword()
 		if err != nil {
@@ -41,7 +41,7 @@ func GenerateUser(dataLength int) ([]string, error) {
 		}
 		password.value = pwd
 
-		email.value = fmt.Sprintf("%s@%s.com", GetBabble(), GetBabble())
+		email.value = fmt.Sprintf("%s@%s.com", GetBabble(1), GetBabble(1))
 		dob.value = GetRandDateString(1940, 2010)
 		gender.value = genders[rand.Intn(3)]
 

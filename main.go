@@ -11,6 +11,8 @@ import (
 
 	"github.com/sethvargo/go-password/password"
 	"github.com/tjarratt/babble"
+
+
 )
 
 var babbler = babble.NewBabbler()
@@ -58,7 +60,9 @@ func ReadTextFile(file string) ([]string, error) {
 	return lines, nil
 }
 
-func GetBabble() string {
+func GetBabble(wordCount int) string {
+	babbler.Count = wordCount
+	babbler.Separator = " "
 	return strings.Replace(babbler.Babble(), "'", "", -1)
 }
 
@@ -94,7 +98,6 @@ func GetRandDateString(startYear, endYear int) string {
 
 func main() {
 	// set babble number of words to generate per call
-	babbler.Count = 1
 
 	if err := GenerateMedication(medicationCount); err != nil {
 		log.Fatal(err)
@@ -117,6 +120,10 @@ func main() {
 	}
 
 	if err := GenerateAppointments(1000, patients, practitioners); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := GeneratePrescriptions(1000, patients, practitioners); err != nil {
 		log.Fatal(err)
 	}
 
