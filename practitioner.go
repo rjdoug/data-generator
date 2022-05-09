@@ -38,7 +38,7 @@ func GeneratePractioners(usernames []string) error {
 
 	}
 
-	err := writeFile("practitioner.sql", lines)
+	err := writeFile("sql_scripts/practitioner.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating patient: %v", err)
 	}

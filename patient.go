@@ -49,7 +49,7 @@ func GeneratePatients(usernames []string) error {
 		lines[idx] = line
 	}
 
-	err := writeFile("patient.sql", lines)
+	err := writeFile("sql_scripts/patient.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating patient: %v", err)
 	}

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
 	"math/rand"
@@ -17,7 +18,7 @@ var babbler = babble.NewBabbler()
 const medicationCount = 700
 
 const userCount int = 700
-const doctorCount int = 10
+const practitionerCount int = 10
 
 func writeFile(file string, lines []string) error {
 	f, err := os.Create(file)
@@ -36,6 +37,25 @@ func writeFile(file string, lines []string) error {
 	fmt.Printf("%s written successfully\n", file)
 
 	return nil
+}
+
+func ReadTextFile(file string) ([]string, error) {
+	f, err := os.Open(file)
+	if err != nil {
+		return nil, fmt.Errorf("opening file: %v", err)
+	}
+	defer f.Close()
+	scanner := bufio.NewScanner(f)
+	var lines []string
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("reading file: %v", err)
+	}
+
+	return lines, nil
 }
 
 func GetBabble() string {
@@ -67,6 +87,7 @@ func GetRandDateString(startYear, endYear int) string {
 
 	sec := rand.Int63n(delta) + min
 	t := time.Unix(sec, 0).String()
+
 	// clip off time zone and return (probably should turn to array and manipulate, but this is fine for now)
 	return t[:len(t)-11]
 }
@@ -84,7 +105,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	GeneratePractioners(usernames[:doctorCount])
-	GeneratePatients(usernames[doctorCount:])
+	practitioners := usernames[:practitionerCount]
+	patients := usernames[practitionerCount:]
+
+	if err := GeneratePractioners(practitioners); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := GeneratePatients(patients); err != nil {
+		log.Fatal(err)
+	}
+
+	if err := GenerateAppointments(1000, patients, practitioners); err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println("DONE")
 
 }

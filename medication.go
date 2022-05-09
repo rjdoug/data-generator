@@ -25,14 +25,14 @@ func GenerateMedication(dataLength int) error {
 
 	lines := make([]string, dataLength)
 
-	min := 0.0
-	max := 100.0
+	const minMedicationCost = 5.0
+	const maxMedicationCost = 100.0
 
 	for i := 0; i < dataLength; i++ {
 		isSubsidised.value = rand.Intn(2)
 		scientificName.value = GetBabble()
 		brand.value = GetBabble()
-		cost.value = min + rand.Float64()*(max-min)
+		cost.value = minMedicationCost + rand.Float64()*(maxMedicationCost-minMedicationCost)
 
 		line := fmt.Sprintf("INSERT INTO medication (%s, %s, %s, %s) VALUES (%d, '%s', '%s', %.2f)\n",
 			isSubsidised.name, scientificName.name, brand.name, cost.name,
@@ -41,7 +41,7 @@ func GenerateMedication(dataLength int) error {
 		lines[i] = line
 	}
 
-	err := writeFile("medication.sql", lines)
+	err := writeFile("sql_scripts/medication.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating medication: %s", err)
 	}

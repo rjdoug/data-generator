@@ -54,7 +54,7 @@ func GenerateUser(dataLength int) ([]string, error) {
 
 	}
 
-	err := writeFile("users.sql", lines)
+	err := writeFile("sql_scripts/users.sql", lines)
 	if err != nil {
 		return nil, fmt.Errorf("generating medication: %s", err)
 	}
