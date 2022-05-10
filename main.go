@@ -8,11 +8,11 @@ import (
 	"github.com/BlaviButcher/data-generator/io"
 )
 
-const userCount int = 20
-const practitionerCount int = 10
-const prescriptionCount = 10
-const medicationCount = 10
-const appointmentCount = 10
+const userCount int = 200000
+const practitionerCount int = 4000
+const prescriptionCount = 20000
+const medicationCount = 80000
+const appointmentCount = 80000
 const containsCount = prescriptionCount
 
 func main() {
