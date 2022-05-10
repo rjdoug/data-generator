@@ -30,7 +30,7 @@ func GeneratePractioners(usernames []string) error {
 
 		hourlySalary.value = rand.Float64() * 100
 
-		line := fmt.Sprintf("INSERT INTO medical_practitioner (%s, %s, %s) VALUES ('%s', '%s', %.2f)\n",
+		line := fmt.Sprintf("INSERT INTO medical_practitioner (%s, %s, %s) VALUES ('%s', '%s', %.2f);\n",
 			username.name, role.name, hourlySalary.name,
 			username.value, role.value, hourlySalary.value)
 

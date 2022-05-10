@@ -42,10 +42,12 @@ func GenerateUser(dataLength int) ([]string, error) {
 		password.value = pwd
 
 		email.value = fmt.Sprintf("%s@%s.com", GetBabble(1), GetBabble(1))
-		dob.value = GetRandDateString(1940, 2010)
+		randDateTime := GetRandDateString(1940, 2010)
+		dob.value = randDateTime[:10]
+
 		gender.value = genders[rand.Intn(3)]
 
-		line := fmt.Sprintf("INSERT INTO users (%s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', TO_DATE('%s'), '%s')\n",
+		line := fmt.Sprintf("INSERT INTO users (%s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', TO_DATE('%s', 'YYYY/MM/DD'), '%s');\n",
 			username.name, password.name, email.name, dob.name, gender.name,
 			username.value, password.value, email.value, dob.value, gender.value)
 

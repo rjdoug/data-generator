@@ -34,7 +34,7 @@ func GenerateMedication(dataLength int) error {
 		brand.value = GetBabble(1)
 		cost.value = minMedicationCost + rand.Float64()*(maxMedicationCost-minMedicationCost)
 
-		line := fmt.Sprintf("INSERT INTO medication (%s, %s, %s, %s) VALUES (%d, '%s', '%s', %.2f)\n",
+		line := fmt.Sprintf("INSERT INTO medication (%s, %s, %s, %s) VALUES (%d, '%s', '%s', %.2f);\n",
 			isSubsidised.name, scientificName.name, brand.name, cost.name,
 			isSubsidised.value, scientificName.value, brand.value, cost.value)
 

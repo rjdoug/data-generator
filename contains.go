@@ -54,7 +54,7 @@ func GenerateContains(dataLength, perscriptionLength, medicationLength int) erro
 		instruction.value = GetBabble(10)
 		repeats.value = rand.Intn(maxRepeats)
 
-		line := fmt.Sprintf("INSERT INTO contains (%s, %s, %s, %s, %s) VALUES (%d, %d, %d, '%s', %d)\n",
+		line := fmt.Sprintf("INSERT INTO contains (%s, %s, %s, %s, %s) VALUES (%d, %d, %d, '%s', %d);\n",
 			perscriptionID.name, medicationID.name, dosageMG.name, instruction.name, repeats.name,
 			perscriptionID.value, medicationID.value, dosageMG.value, instruction.value, repeats.value)
 
