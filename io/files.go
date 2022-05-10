@@ -25,7 +25,7 @@ func WriteFile(file string, lines []string) error {
 	return nil
 }
 
-func ReadTextFile(file string) ([]string, error) {
+func ReadFile(file string) ([]string, error) {
 	f, err := os.Open(file)
 	if err != nil {
 		return nil, fmt.Errorf("opening file: %v", err)

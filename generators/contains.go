@@ -1,24 +1,32 @@
 package generators
 
-
 import (
 	"fmt"
 	"math/rand"
-	"github.com/BlaviButcher/data-generator/io"
+
 	"github.com/BlaviButcher/data-generator/generators/helper"
+	"github.com/BlaviButcher/data-generator/io"
 )
 
-func GenerateContains(dataLength, perscriptionLength, medicationLength int) error {
+func GenerateContains(dataLength, perscriptionLength, medicationLength int, prescriptionUsers []User) error {
 
 	const maxMG = 1000
 	const maxRepeats = 5
 
-	perscriptionID := Field[int]{
-		name: "perscription_id",
+	prescriptionID := Field[int]{
+		name: "prescription_id",
 	}
 
 	medicationID := Field[int]{
 		name: "medication_id",
+	}
+
+	patientUsername := Field[string]{
+		name: "patient_username",
+	}
+
+	practitionerUsername := Field[string]{
+		name: "practitioner_username",
 	}
 
 	dosageMG := Field[int]{
@@ -36,15 +44,20 @@ func GenerateContains(dataLength, perscriptionLength, medicationLength int) erro
 	lines := make([]string, dataLength)
 
 	for i := 0; i < dataLength; i++ {
-		perscriptionID.value = rand.Intn(perscriptionLength)
-		medicationID.value = rand.Intn(medicationLength)
+
+		prescriptionIndex := rand.Intn(len(prescriptionUsers))
+
+		prescriptionID.value = prescriptionIndex + 1
+		medicationID.value = rand.Intn(medicationLength) + 1
+		patientUsername.value = prescriptionUsers[prescriptionIndex].patient
+		practitionerUsername.value = prescriptionUsers[prescriptionIndex].practitioner
 		dosageMG.value = rand.Intn(maxMG)
 		instruction.value = helper.GetBabble(10)
 		repeats.value = rand.Intn(maxRepeats)
 
-		line := fmt.Sprintf("INSERT INTO contains (%s, %s, %s, %s, %s) VALUES (%d, %d, %d, '%s', %d);\n",
-			perscriptionID.name, medicationID.name, dosageMG.name, instruction.name, repeats.name,
-			perscriptionID.value, medicationID.value, dosageMG.value, instruction.value, repeats.value)
+		line := fmt.Sprintf("INSERT INTO contains (%s, %s, %s, %s, %s, %s, %s) VALUES (%d, %d, '%s', '%s', %d, '%s', %d);\n",
+			prescriptionID.name, medicationID.name, patientUsername.name, practitionerUsername.name, dosageMG.name, instruction.name, repeats.name,
+			prescriptionID.value, medicationID.value, patientUsername.value, practitionerUsername.value, dosageMG.value, instruction.value, repeats.value)
 
 		lines[i] = line
 	}

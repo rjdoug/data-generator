@@ -55,7 +55,7 @@ func GenerateAppointments(dataLength int, patients, practitioners []string) erro
 
 	lines := make([]string, dataLength)
 
-	randomReasons, err := io.ReadTextFile("data/injuries.txt")
+	randomReasons, err := io.ReadFile("data/injuries.txt")
 	if err != nil {
 		return fmt.Errorf("generating appointments: %s", err)
 	}

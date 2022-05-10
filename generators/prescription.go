@@ -1,14 +1,21 @@
 package generators
 
-
 import (
 	"fmt"
 	"math/rand"
-	"github.com/BlaviButcher/data-generator/io"
+
 	"github.com/BlaviButcher/data-generator/generators/helper"
+	"github.com/BlaviButcher/data-generator/io"
 )
 
-func GeneratePrescriptions(dataLength int, patients, practitioners []string) error {
+type User struct {
+	patient      string
+	practitioner string
+}
+
+func GeneratePrescriptions(dataLength int, patients, practitioners []string) ([]User, error) {
+
+	// This is passed back for use in contains - BAD PRACTICE I know
 
 	patientUsername := Field[string]{
 		name: "patient_username",
@@ -23,6 +30,7 @@ func GeneratePrescriptions(dataLength int, patients, practitioners []string) err
 	}
 
 	lines := make([]string, dataLength)
+	users := make([]User, dataLength)
 
 	for i := 0; i < dataLength; i++ {
 		patientUsername.value = patients[rand.Intn(len(patients))]
@@ -34,12 +42,16 @@ func GeneratePrescriptions(dataLength int, patients, practitioners []string) err
 			patientUsername.value, practitionerUsername.value, notes.value)
 
 		lines[i] = line
+
+		user := User{patient: patientUsername.value, practitioner: practitionerUsername.value}
+		users[i] = user
+
 	}
 
-	err := io.WriteFile("sql_scripts/prescriptions.sql", lines)
+	err := io.WriteFile("sql_scripts/prescription.sql", lines)
 	if err != nil {
-		return fmt.Errorf("generating prescriptons: %s", err)
+		return nil, fmt.Errorf("generating prescriptons: %s", err)
 	}
-	return nil
+	return users, nil
 
 }
