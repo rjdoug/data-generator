@@ -50,7 +50,7 @@ func GenerateAppointments(dataLength int, patients, practitioners []string) erro
 	}
 
 	isACC := Field[int]{
-		name: "acc",
+		name: "is_acc",
 	}
 
 	lines := make([]string, dataLength)
@@ -78,7 +78,7 @@ func GenerateAppointments(dataLength int, patients, practitioners []string) erro
 
 		isACC.value = rand.Intn(2)
 
-		line := fmt.Sprintf("INSERT INTO appointment (%s, %s, %s, %s, %s, %s, %s) VALUES ('%s', '%s', TO_DATE('%s'), TO_DATE('%s'), '%s', '%.2f', %d)\n",
+		line := fmt.Sprintf("INSERT INTO appointment(%s, %s, %s, %s, %s, %s, %s) VALUES('%s', '%s', TO_DATE('%s', 'YYYY/MM/DD HH24:MI:SS'), TO_DATE('%s', 'YYYY/MM/DD HH24:MI:SS'), '%s', '%.2f', %d);\n",
 			patientUsername.name, practitionerUsername.name, startTime.name, endTime.name, reason.name, cost.name, isACC.name,
 			patientUsername.value, practitionerUsername.value, startTime.value, endTime.value, reason.value, cost.value, isACC.value)
 

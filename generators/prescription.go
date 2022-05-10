@@ -29,7 +29,7 @@ func GeneratePrescriptions(dataLength int, patients, practitioners []string) err
 		practitionerUsername.value = practitioners[rand.Intn(len(practitioners))]
 		notes.value = helper.GetBabble(10)
 
-		line := fmt.Sprintf("INSERT INTO prescription (%s, %s, %s) VALUES ('%s', '%s', '%s')\n",
+		line := fmt.Sprintf("INSERT INTO prescription (%s, %s, %s) VALUES ('%s', '%s', '%s');\n",
 			patientUsername.name, practitionerUsername.name, notes.name,
 			patientUsername.value, practitionerUsername.value, notes.value)
 

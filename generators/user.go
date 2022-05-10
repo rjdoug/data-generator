@@ -1,11 +1,11 @@
 package generators
 
-
 import (
 	"fmt"
 	"math/rand"
-	"github.com/BlaviButcher/data-generator/io"
+
 	"github.com/BlaviButcher/data-generator/generators/helper"
+	"github.com/BlaviButcher/data-generator/io"
 )
 
 func GenerateUser(dataLength int) ([]string, error) {
@@ -45,10 +45,12 @@ func GenerateUser(dataLength int) ([]string, error) {
 		password.value = pwd
 
 		email.value = fmt.Sprintf("%s@%s.com", helper.GetBabble(1), helper.GetBabble(1))
-		dob.value = helper.GetRandDateString(1940, 2010)
+		randDateTime := helper.GetRandDateString(1940, 2010)
+		dob.value = randDateTime[:10]
+
 		gender.value = genders[rand.Intn(3)]
 
-		line := fmt.Sprintf("INSERT INTO users (%s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', TO_DATE('%s'), '%s')\n",
+		line := fmt.Sprintf("INSERT INTO users (%s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', TO_DATE('%s', 'YYYY/MM/DD'), '%s');\n",
 			username.name, password.name, email.name, dob.name, gender.name,
 			username.value, password.value, email.value, dob.value, gender.value)
 

@@ -43,7 +43,7 @@ func GeneratePatients(usernames []string) error {
 
 		address.value = fake.StreetAddress()
 
-		line := fmt.Sprintf("INSERT INTO patient (%s, %s, %s) VALUES ('%s', '%s', '%s')\n",
+		line := fmt.Sprintf("INSERT INTO patient (%s, %s, %s) VALUES ('%s', '%s', '%s');\n",
 			username.name, nhi.name, address.name,
 			username.value, nhi.value, address.value)
 
