@@ -1,8 +1,11 @@
-package main
+package generators
+
 
 import (
 	"fmt"
 	"math/rand"
+	"github.com/BlaviButcher/data-generator/io"
+	"github.com/BlaviButcher/data-generator/generators/helper"
 )
 
 func GenerateUser(dataLength int) ([]string, error) {
@@ -33,16 +36,16 @@ func GenerateUser(dataLength int) ([]string, error) {
 	usernames := make([]string, dataLength)
 
 	for i := 0; i < dataLength; i++ {
-		username.value = GetBabble(1)
+		username.value = helper.GetBabble(1)
 
-		pwd, err := GetPassword()
+		pwd, err := helper.GetPassword()
 		if err != nil {
 			return nil, fmt.Errorf("generating user: %v", err)
 		}
 		password.value = pwd
 
-		email.value = fmt.Sprintf("%s@%s.com", GetBabble(1), GetBabble(1))
-		dob.value = GetRandDateString(1940, 2010)
+		email.value = fmt.Sprintf("%s@%s.com", helper.GetBabble(1), helper.GetBabble(1))
+		dob.value = helper.GetRandDateString(1940, 2010)
 		gender.value = genders[rand.Intn(3)]
 
 		line := fmt.Sprintf("INSERT INTO users (%s, %s, %s, %s, %s) VALUES ('%s', '%s', '%s', TO_DATE('%s'), '%s')\n",
@@ -54,7 +57,7 @@ func GenerateUser(dataLength int) ([]string, error) {
 
 	}
 
-	err := writeFile("sql_scripts/users.sql", lines)
+	err := io.WriteFile("sql_scripts/users.sql", lines)
 	if err != nil {
 		return nil, fmt.Errorf("generating medication: %s", err)
 	}

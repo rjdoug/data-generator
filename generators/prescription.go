@@ -1,8 +1,11 @@
-package main
+package generators
+
 
 import (
 	"fmt"
 	"math/rand"
+	"github.com/BlaviButcher/data-generator/io"
+	"github.com/BlaviButcher/data-generator/generators/helper"
 )
 
 func GeneratePrescriptions(dataLength int, patients, practitioners []string) error {
@@ -24,7 +27,7 @@ func GeneratePrescriptions(dataLength int, patients, practitioners []string) err
 	for i := 0; i < dataLength; i++ {
 		patientUsername.value = patients[rand.Intn(len(patients))]
 		practitionerUsername.value = practitioners[rand.Intn(len(practitioners))]
-		notes.value = GetBabble(10)
+		notes.value = helper.GetBabble(10)
 
 		line := fmt.Sprintf("INSERT INTO prescription (%s, %s, %s) VALUES ('%s', '%s', '%s')\n",
 			patientUsername.name, practitionerUsername.name, notes.name,
@@ -33,7 +36,7 @@ func GeneratePrescriptions(dataLength int, patients, practitioners []string) err
 		lines[i] = line
 	}
 
-	err := writeFile("sql_scripts/prescriptions.sql", lines)
+	err := io.WriteFile("sql_scripts/prescriptions.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating prescriptons: %s", err)
 	}

@@ -1,8 +1,9 @@
-package main
+package generators
 
 import (
 	"fmt"
 
+	"github.com/BlaviButcher/data-generator/io"
 	"github.com/icrowley/fake"
 	"github.com/lucasjones/reggen"
 )
@@ -49,7 +50,7 @@ func GeneratePatients(usernames []string) error {
 		lines[idx] = line
 	}
 
-	err := writeFile("sql_scripts/patient.sql", lines)
+	err := io.WriteFile("sql_scripts/patient.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating patient: %v", err)
 	}

@@ -1,8 +1,11 @@
-package main
+package generators
 
 import (
 	"fmt"
 	"math/rand"
+
+	"github.com/BlaviButcher/data-generator/generators/helper"
+	"github.com/BlaviButcher/data-generator/io"
 )
 
 func GenerateMedication(dataLength int) error {
@@ -30,8 +33,8 @@ func GenerateMedication(dataLength int) error {
 
 	for i := 0; i < dataLength; i++ {
 		isSubsidised.value = rand.Intn(2)
-		scientificName.value = GetBabble(1)
-		brand.value = GetBabble(1)
+		scientificName.value = helper.GetBabble(1)
+		brand.value = helper.GetBabble(1)
 		cost.value = minMedicationCost + rand.Float64()*(maxMedicationCost-minMedicationCost)
 
 		line := fmt.Sprintf("INSERT INTO medication (%s, %s, %s, %s) VALUES (%d, '%s', '%s', %.2f)\n",
@@ -41,7 +44,7 @@ func GenerateMedication(dataLength int) error {
 		lines[i] = line
 	}
 
-	err := writeFile("sql_scripts/medication.sql", lines)
+	err := io.WriteFile("sql_scripts/medication.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating medication: %s", err)
 	}

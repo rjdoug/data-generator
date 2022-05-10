@@ -1,23 +1,11 @@
-// CREATE TABLE contains(
-// id NUMBER GENERATED ALWAYS AS IDENTITY,
-// perscription_id NUMBER(20) NOT NULL,
-// medication_id NUMBER(20) NOT NULL,
-// dosage_mg NUMBER(20,2),
-// instruction VARCHAR2(2000),
-// repeats NUMBER(20),
-// PRIMARY KEY(id, perscription_id, medication_id)
-// --    FOREIGN KEY(perscription_id)
-// --    REFERENCES perscription(id),
-// --    FOREIGN KEY(medication_id)
-// --    REFERENCES medication(medication_id)
-// );
-//
+package generators
 
-package main
 
 import (
 	"fmt"
 	"math/rand"
+	"github.com/BlaviButcher/data-generator/io"
+	"github.com/BlaviButcher/data-generator/generators/helper"
 )
 
 func GenerateContains(dataLength, perscriptionLength, medicationLength int) error {
@@ -51,7 +39,7 @@ func GenerateContains(dataLength, perscriptionLength, medicationLength int) erro
 		perscriptionID.value = rand.Intn(perscriptionLength)
 		medicationID.value = rand.Intn(medicationLength)
 		dosageMG.value = rand.Intn(maxMG)
-		instruction.value = GetBabble(10)
+		instruction.value = helper.GetBabble(10)
 		repeats.value = rand.Intn(maxRepeats)
 
 		line := fmt.Sprintf("INSERT INTO contains (%s, %s, %s, %s, %s) VALUES (%d, %d, %d, '%s', %d)\n",
@@ -61,7 +49,7 @@ func GenerateContains(dataLength, perscriptionLength, medicationLength int) erro
 		lines[i] = line
 	}
 
-	err := writeFile("sql_scripts/contains.sql", lines)
+	err := io.WriteFile("sql_scripts/contains.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating contains relationship: %s", err)
 	}

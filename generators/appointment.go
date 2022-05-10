@@ -1,9 +1,10 @@
-package main
+package generators
 
 import (
 	"fmt"
 	"math/rand"
 	"time"
+	"github.com/BlaviButcher/data-generator/io"
 )
 
 // CREATE TABLE APPOINTMENT (
@@ -19,7 +20,7 @@ import (
 //
 
 func GenerateAppointments(dataLength int, patients, practitioners []string) error {
-
+	
 	const appointmentTime = 30
 	const minAppointmentCost = 20.0
 	const maxAppointmentCost = 100.0
@@ -54,7 +55,7 @@ func GenerateAppointments(dataLength int, patients, practitioners []string) erro
 
 	lines := make([]string, dataLength)
 
-	randomReasons, err := ReadTextFile("data/injuries.txt")
+	randomReasons, err := io.ReadTextFile("data/injuries.txt")
 	if err != nil {
 		return fmt.Errorf("generating appointments: %s", err)
 	}
@@ -84,7 +85,7 @@ func GenerateAppointments(dataLength int, patients, practitioners []string) erro
 		lines[i] = line
 	}
 
-	err = writeFile("sql_scripts/appointment.sql", lines)
+	err = io.WriteFile("sql_scripts/appointment.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating medication: %s", err)
 	}

@@ -1,8 +1,10 @@
-package main
+package generators
 
 import (
 	"fmt"
 	"math/rand"
+
+	"github.com/BlaviButcher/data-generator/io"
 )
 
 func GeneratePractioners(usernames []string) error {
@@ -38,7 +40,7 @@ func GeneratePractioners(usernames []string) error {
 
 	}
 
-	err := writeFile("sql_scripts/practitioner.sql", lines)
+	err := io.WriteFile("sql_scripts/practitioner.sql", lines)
 	if err != nil {
 		return fmt.Errorf("generating patient: %v", err)
 	}
