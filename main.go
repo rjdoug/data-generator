@@ -66,43 +66,50 @@ func combineAndMinify() error {
 	if err != nil {
 		return fmt.Errorf("joining files %v", err)
 	}
+	users = append(users, "\n")
 
 	patients, err := io.ReadFile("sql_scripts/patient.sql")
 	if err != nil {
 		return fmt.Errorf("joining files %v", err)
 	}
+	patients = append(patients, "\n")
 
-	practitioner, err := io.ReadFile("sql_scripts/practitioner.sql")
+	practitioners, err := io.ReadFile("sql_scripts/practitioner.sql")
 	if err != nil {
 		return fmt.Errorf("joining files %v", err)
 	}
+	practitioners = append(practitioners, "\n")
 
-	appointment, err := io.ReadFile("sql_scripts/appointment.sql")
+	appointments, err := io.ReadFile("sql_scripts/appointment.sql")
 	if err != nil {
 		return fmt.Errorf("joining files %v", err)
 	}
+	appointments = append(appointments, "\n")
 
-	medication, err := io.ReadFile("sql_scripts/medication.sql")
+	medications, err := io.ReadFile("sql_scripts/medication.sql")
 	if err != nil {
 		return fmt.Errorf("joining files %v", err)
 	}
+	medications = append(medications, "\n")
 
-	prescription, err := io.ReadFile("sql_scripts/prescription.sql")
+	prescriptions, err := io.ReadFile("sql_scripts/prescription.sql")
 	if err != nil {
 		return fmt.Errorf("joining files %v", err)
 	}
+	prescriptions = append(prescriptions, "\n")
 
 	contains, err := io.ReadFile("sql_scripts/contains.sql")
 	if err != nil {
 		return fmt.Errorf("joining files %v", err)
 	}
+	contains = append(contains, "\n")
 
 	combinedFile = append(combinedFile, users...)
 	combinedFile = append(combinedFile, patients...)
-	combinedFile = append(combinedFile, practitioner...)
-	combinedFile = append(combinedFile, appointment...)
-	combinedFile = append(combinedFile, medication...)
-	combinedFile = append(combinedFile, prescription...)
+	combinedFile = append(combinedFile, practitioners...)
+	combinedFile = append(combinedFile, appointments...)
+	combinedFile = append(combinedFile, medications...)
+	combinedFile = append(combinedFile, prescriptions...)
 	combinedFile = append(combinedFile, contains...)
 
 	if err := io.WriteFile("sql_scripts/combined.sql", combinedFile); err != nil {
