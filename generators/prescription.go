@@ -30,9 +30,11 @@ func GeneratePrescriptions(dataLength int, patients, practitioners []string) ([]
 	}
 
 	lines := make([]string, dataLength)
+	// csvLines := make([]string, dataLength)
 	users := make([]User, dataLength)
 
 	for i := 0; i < dataLength; i++ {
+		
 		patientUsername.value = patients[rand.Intn(len(patients))]
 		practitionerUsername.value = practitioners[rand.Intn(len(practitioners))]
 		notes.value = helper.GetBabble(10)
@@ -41,7 +43,10 @@ func GeneratePrescriptions(dataLength int, patients, practitioners []string) ([]
 			patientUsername.name, practitionerUsername.name, notes.name,
 			patientUsername.value, practitionerUsername.value, notes.value)
 
+		// csvLine := fmt.Sprintf("%s, %s, %s\n", patientUsername.value, practitionerUsername.value, notes.value)
+
 		lines[i] = line
+		// csvLines[i] = csvLine
 
 		user := User{patient: patientUsername.value, practitioner: practitionerUsername.value}
 		users[i] = user
@@ -50,8 +55,13 @@ func GeneratePrescriptions(dataLength int, patients, practitioners []string) ([]
 
 	err := io.WriteFile("sql_scripts/prescription.sql", lines)
 	if err != nil {
-		return nil, fmt.Errorf("generating prescriptons: %s", err)
+		return nil, fmt.Errorf("generating prescriptons sql: %s", err)
 	}
+
+	// err = io.WriteFile("sql_scripts/prescription.csv", csvLines)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("generating prescriptons csv: %s", err)
+	// }
 	return users, nil
 
 }

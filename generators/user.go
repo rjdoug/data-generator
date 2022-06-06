@@ -38,10 +38,8 @@ func GenerateUser(dataLength int) ([]string, error) {
 	for i := 0; i < dataLength; i++ {
 		username.value = helper.GetBabble(1)
 
-		pwd, err := helper.GetPassword()
-		if err != nil {
-			return nil, fmt.Errorf("generating user: %v", err)
-		}
+		pwd := helper.GetBabble(1)
+
 		password.value = pwd
 
 		email.value = fmt.Sprintf("%s@%s.com", helper.GetBabble(1), helper.GetBabble(1))
